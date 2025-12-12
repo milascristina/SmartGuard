@@ -1,47 +1,34 @@
 SmartGuard – Funcționalități Cheie
-
-SmartGuard este o aplicație inteligentă de monitorizare a sănătății care permite utilizatorilor să încarce date, să vizualizeze analize, să primească alerte bazate pe logică AI și să interacționeze cu medici pentru monitorizare continuă.
-
-🚀 1. Modulul de Încărcare și Gestiune a Datelor (Input)
-
-Acest modul permite introducerea datelor biometrice atât automat (prin fișiere), cât și manual.
-
+1. Modulul de Încărcare și Gestiune a Datelor (Input)
 Încărcare Date (Data Ingestion)
 
-Import CSV/JSON
-Permite încărcarea fișierelor ce conțin serii de timp pentru:
+Import CSV / JSON pentru:
 
 Ritm cardiac
 
-Număr de pași
+Pași
 
-Date despre somn
+Somn
 
-Alți indicatori fiziologici
+Validare date:
 
-Validare Date
-Sistemul verifică:
+Format corect dată/oră
 
-Formate valide ale datei/orei
+Valori în interval realist
 
-Interval realist al valorilor (ex: ritm cardiac)
-
-Integritatea și completitudinea datelor
+Integritate fișier
 
 Introducere Manuală
 
-Jurnal de Stare
-Formular pentru introducerea stării de spirit, nivelului de energie și simptomelor (ex: „Durere de cap”, „Oboseală”).
+Jurnal de stare (mood, energie, simptome)
 
-Măsurători Ocazionale
+Introducere tensiune arterială
 
-Tensiune arterială
+Introducere glicemie
 
-Glicemie
+Profil Biometric
 
-Management Profil Biometric
-
-Setare și actualizare date personale:
+Setare / actualizare:
 
 Vârstă
 
@@ -51,37 +38,36 @@ Greutate
 
 Înălțime
 
-Acestea sunt utilizate în calculele fiziologice ulterioare.
+2. Modulul de Vizualizare și Analiză (Dashboard + Analytics)
+Dashboard
 
-📊 2. Modulul de Vizualizare și Analiză (Core)
+Ritm cardiac mediu (ultimele 7 zile)
 
-Transformă datele brute în informații clare și utile.
+Total pași & progres zilnic
 
-Dashboard (Tablou de Bord)
+Scor mediu somn
 
-Afișează sumarul datelor recente:
-
-Media ritmului cardiac de repaus (7 zile)
-
-Total pași și progres către obiectivul zilnic
-
-Scorul mediu de somn
-
-Ultimele alerte generate
+Ultimele alerte
 
 Vizualizare Grafică Interactivă
 
-Grafice de Tendințe
-Vizualizarea seriilor de timp (Ritm Cardiac, Pași, Calorii) pe perioade:
+Grafice de tendințe pentru:
 
-Zilnic
+Ritm cardiac
 
-Săptămânal
+Pași
 
-Lunar
+Calorii
 
-Analiza Somnului
-Reprezentare vizuală a fazelor somnului:
+Perioade selectabile:
+
+Zi
+
+Săptămână
+
+Lună
+
+Analiza somnului:
 
 Somn ușor
 
@@ -89,72 +75,64 @@ Somn profund
 
 REM
 
-Calcularea Indicatorilor Avansați
+Indicatori Avansați
 
-Nivel de Activitate
-Calcularea minutelor de efort moderat și intens.
+Nivel de activitate (minute moderate & intense)
 
-Rata Metabolică Bazală (BMR)
-Proceduri de calcul pentru numărul de calorii arse, bazate pe date biometrice + activitatea raportată.
+BMR + calorii arse (calcul pe baza datelor biometrice)
 
-⚠️ 3. Modulul de Evaluare și Alertare (AI / Smart Logic)
+3. Modulul de Evaluare și Alertare (AI / Smart Logic)
+Sistem de Praguri
 
-Modulele inteligente oferă notificări bazate pe analiză automată a datelor.
+Detectare valori critice:
 
-Sistem de Praguri (Thresholding)
-
-Praguri prestabilite ce indică potențiale probleme:
-
-Ritm cardiac de repaus < 45 bpm sau > 100 bpm
+Ritm cardiac < 45 bpm / > 100 bpm
 
 SpO₂ < 90%
 
-Alte valori critice definite de utilizator
+Alte praguri definite
 
-Logica AI Simplificată
+Analiză AI Simplificată
 
-Funcția AI analizează datele încărcate (ex: 24h) și returnează True dacă:
+Funcția AI generează alertă dacă:
 
-A fost depășit un prag critic
+Un prag critic este depășit
 
-Există o tendință negativă (ex: ritm cardiac în creștere cu 10% timp de 3 zile)
+Există o tendință negativă (ex: ritm cardiac crește 3 zile consecutiv)
 
-Sistem de Alerte
+Alerte
 
-Alerte în aplicație: notificări afișate pe dashboard
+Afișare alertă în aplicație
 
-Istoric al alertelor: jurnal cu toate evenimentele critice
+Istoric complet al alertelor
 
-Feedback pentru obiective atinse (pași, somn etc.)
+Notificări pozitive când se ating obiective
 
-🩺 4. Modulul de Interacțiune Doctor/Pacient
+4. Modulul de Interacțiune Doctor–Pacient
+Căutare și Cerere Monitorizare
 
-Folosește relațiile definite între utilizatori și medici pentru monitorizare colaborativă.
+Utilizatorul poate:
 
-Căutare și Solicitare Medic
+Căuta doctori după nume sau specializare
 
-Căutare doctor după:
-
-Nume
-
-Specializare
-
-Trimiterea unei cereri de monitorizare (Status: Pending)
+Trimite cerere (status: PENDING)
 
 Dashboard Doctor
 
-Vizualizarea cererilor în așteptare (Pending)
+Doctorul poate:
 
-Acceptarea / respingerea cererilor
+Vizualiza cereri în așteptare
 
-Gestionarea relației de monitorizare
+Accepta / respinge cereri
+
+Gestiona pacienți
 
 Partajare Date Pacient
 
-După acceptarea relației:
+După ACCEPT:
 
-Doctorul poate vizualiza dashboard-ul pacientului
+Doctorul vede dashboard-ul pacientului
 
-Acces la istoricul de alerte
+Poate consulta istoricul alertelor
 
-Acces la datele încărcate ale pacientului
+Acces la datele încărcate
