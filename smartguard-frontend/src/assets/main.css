@@ -1,0 +1,18 @@
+/* src/assets/main.css */
+
+:root {
+  /* Culori principale - Mov Închis */
+  --color-background: #2c2a39;
+  --color-background-soft: #383648;
+  --color-background-mute: #48465a;
+
+  /* Culori de Accent */
+  --color-accent: #7050a1;
+  --color-accent-hover: #9276c1;
+
+  /* Text - VARIABILA CRITICĂ PENTRU REZOLVAREA ERORII */
+  --color-text: #f0f0f0;
+  --color-heading: #d5c8e3;
+
+  --section-gap: 160px; /* Variabila standard Vue */
+}

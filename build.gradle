@@ -1,0 +1,48 @@
+// 1. BLOCUL PLUGINS (TREBUIE SĂ FIE PRIMUL!)
+plugins {
+    id 'java'
+    // Aici s-ar putea să aveți o versiune de Spring Boot prea nouă (4.0.0 nu există încă, dar ne vom baza pe ce ați furnizat)
+    id 'org.springframework.boot' version '3.2.0' // Am corectat la o versiune existentă (presupunând că doriți Spring Boot 3+)
+    id 'io.spring.dependency-management' version '1.1.7'
+}
+
+// 2. DETALII GENERALE (Group, Version, Descriere)
+group = 'org.example'
+version = '0.0.1-SNAPSHOT'
+description = 'SmartGuard'
+
+// 3. CONFIGURAREA JAVA
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
+// 4. REPOSITORIES
+repositories {
+    mavenCentral()
+}
+
+// 5. BLOCUL DEPENDENCIES (TREBUIE SĂ FIE ULTIMUL BLOC MAJOR)
+dependencies {
+    // Web și API
+    implementation 'org.springframework.boot:spring-boot-starter-web' // Am schimbat din webmvc in web
+
+    // JPA, Bază de Date și Lombok (Noile adăugiri)
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    runtimeOnly 'com.h2database:h2'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    // Lombok
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
+    // DevTools și Teste
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test' // Recomand test în loc de webmvc-test
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+// 6. TASKS
+tasks.named('test') {
+    useJUnitPlatform()
+}

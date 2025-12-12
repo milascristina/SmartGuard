@@ -1,0 +1,77 @@
+/* 1. IMPORTUL VARIABILELOR:
+   ACEASTA ESTE LINIA ESENȚIALĂ PENTRU A REZOLVA PROBLEMA.
+   Asigură că variabilele --color-text, --color-background, etc.,
+   sunt definite în :root înainte de a fi folosite mai jos. */
+@import './main.css';
+
+/* 2. RESETARE GENERALA */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  font-weight: normal;
+}
+
+/* 3. STILURI PENTRU CORP (BODY) */
+body {
+  min-height: 100vh;
+  /* Setam culorile folosind variabilele din main.css */
+  color: var(--color-text);
+  background: var(--color-background);
+
+  transition:
+          color 0.5s,
+          background-color 0.5s;
+  line-height: 1.6;
+  font-family:
+          'Segoe UI',
+          Tahoma,
+          Geneva,
+          Verdana,
+          sans-serif;
+  font-size: 15px;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* 4. STILURI PENTRU CONTAINERUL PRINCIPAL (#app) */
+#app {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  font-weight: normal;
+
+  /* Setam culorile la nivel de #app (daca este necesar) */
+  background-color: var(--color-background);
+  color: var(--color-text);
+}
+
+/* 5. STILURI PENTRU LINK-URI (Accent Mov) */
+a,
+.accent-color,
+.link-accent { /* Combinam clasele de accent */
+  text-decoration: none;
+  color: var(--color-accent); /* Culoarea mov intens */
+  transition: 0.4s;
+  padding: 3px;
+}
+
+@media (hover: hover) {
+  a:hover {
+    /* Folosim o varianta mai deschisa a movului (sau fundal moale) pentru hover */
+    background-color: var(--color-background-soft);
+    color: var(--color-accent-hover);
+  }
+}
+
+/* 6. Ajustări pentru ecrane mari (desktop) */
+@media (min-width: 1024px) {
+  body {
+    display: flex;
+    place-items: center; /* Centrare */
+  }
+
+  /* #app nu necesita modificari in acest caz, deoarece width-ul si padding-ul sunt deja setate */
+}
