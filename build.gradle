@@ -27,7 +27,8 @@ repositories {
 dependencies {
     // Web și API
     implementation 'org.springframework.boot:spring-boot-starter-web' // Am schimbat din webmvc in web
-
+    implementation 'org.xerial:sqlite-jdbc:3.42.0.0'
+    implementation 'org.hibernate.orm:hibernate-community-dialects:6.3.1.Final'
     // JPA, Bază de Date și Lombok (Noile adăugiri)
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     runtimeOnly 'com.h2database:h2'

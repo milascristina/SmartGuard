@@ -5,7 +5,6 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import org.hibernate.annotations.CreationTimestamp;
 
-
 @Entity
 @Table(name = "sensor_data")
 public class SensorData {
@@ -15,68 +14,43 @@ public class SensorData {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
-    private User user; // Cheie străină către User
+    private User user;
 
     @Enumerated(EnumType.STRING)
-    private DataType type; // HEART_RATE, STEPS, SLEEP
-    @Column(name = "sensor_value")
-    private Double value;
-    private Instant timestamp; // Data/Ora la care a fost făcută măsurătoarea (din fișier)
+    @Column(nullable = false)
+    private DataType type; // HEART_RATE, STEPS, etc.
+
+    @Column(name = "sensor_value", nullable = false)
+    private Double sensorValue; // Am redenumit din 'value' in 'sensorValue' pentru a se potrivi cu Service-ul
+
+    @Column(nullable = false)
+    private Instant timestamp; // Ora măsurătorii din smartwatch
 
     @CreationTimestamp
-    private LocalDateTime importedAt; // Data la care a fost importată înregistrarea în BD
+    @Column(name = "imported_at", updatable = false)
+    private LocalDateTime importedAt;
 
     // --- Constructors ---
-    public SensorData() {
-    }
+    public SensorData() {}
 
     // --- Getters and Setters ---
 
-    public Long getId() {
-        return id;
-    }
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    public User getUser() { return user; }
+    public void setUser(User user) { this.user = user; }
 
-    public User getUser() {
-        return user;
-    }
+    public DataType getType() { return type; }
+    public void setType(DataType type) { this.type = type; }
 
-    public void setUser(User user) {
-        this.user = user;
-    }
+    // Metodele de care avea nevoie DataIngestionService:
+    public Double getSensorValue() { return sensorValue; }
+    public void setSensorValue(Double sensorValue) { this.sensorValue = sensorValue; }
 
-    public DataType getType() {
-        return type;
-    }
+    public Instant getTimestamp() { return timestamp; }
+    public void setTimestamp(Instant timestamp) { this.timestamp = timestamp; }
 
-    public void setType(DataType type) {
-        this.type = type;
-    }
-
-    public Double getValue() {
-        return value;
-    }
-
-    public void setValue(Double value) {
-        this.value = value;
-    }
-
-    public Instant getTimestamp() {
-        return timestamp;
-    }
-
-    public void setTimestamp(Instant timestamp) {
-        this.timestamp = timestamp;
-    }
-
-    public LocalDateTime getImportedAt() {
-        return importedAt;
-    }
-
-    public void setImportedAt(LocalDateTime importedAt) {
-        this.importedAt = importedAt;
-    }
+    public LocalDateTime getImportedAt() { return importedAt; }
+    public void setImportedAt(LocalDateTime importedAt) { this.importedAt = importedAt; }
 }

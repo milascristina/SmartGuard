@@ -6,102 +6,195 @@ import { computed } from 'vue';
 const route = useRoute();
 const router = useRouter();
 
-const userName = computed(() => {
-  // Returnează numele stocat sau 'Utilizator' ca fallback
-  return localStorage.getItem('userName') || 'Utilizator';
-});
+// Date preluate din localStorage după login
+const userName = computed(() => localStorage.getItem('userName') || 'Utilizator');
+const userRole = computed(() => localStorage.getItem('userRole') || 'PATIENT');
+const isDoctor = computed(() => userRole.value === 'DOCTOR');
 
-// Verificăm dacă utilizatorul este doctor (pentru a afișa/ascunde anumite elemente)
-const isDoctor = computed(() => {
-  return localStorage.getItem('userRole') === 'DOCTOR';
-});
-
-// Funcție pentru a genera titlul paginii în funcție de ruta curentă
-const pageTitle = (path) => {
-  switch (path) {
-    case '/data/upload': return 'Încărcare Date';
-    case '/data/analysis': return 'Vizualizare și Analiză';
-    case '/alerts': return 'Evaluare și Alerte';
-    case '/find-doctor': return 'Găsește un Doctor';
-    case '/profile': return 'Profilul Utilizatorului';
-    default: return 'Pagina Principală SmartGuard';
+// Configurația celor 4 module principale
+const modules = [
+  {
+    id: 1,
+    title: 'Gestiune Date',
+    desc: 'Import CSV Smartwatch și Jurnal manual',
+    icon: '📥',
+    path: '/data/upload'
+  },
+  {
+    id: 2,
+    title: 'Analiză și Grafice',
+    desc: 'Vizualizare tendințe ritm cardiac și pași',
+    icon: '📊',
+    path: '/data/analysis'
+  },
+  {
+    id: 3,
+    title: 'Evaluare și Alerte',
+    desc: 'Sistem inteligent de praguri critice',
+    icon: '🚨',
+    path: '/alerts'
+  },
+  {
+    id: 4,
+    title: isDoctor.value ? 'Gestiune Pacienți' : 'Medic Curant',
+    desc: isDoctor.value ? 'Monitorizare cereri pacienți' : 'Găsește și contactează un doctor',
+    icon: '👨‍⚕️',
+    path: isDoctor.value ? '/doctor/dashboard' : '/find-doctor'
   }
-};
+];
 
-// Funcție pentru navigare rapidă de la butonul CTA
-const goToFindDoctor = () => {
-  router.push('/find-doctor');
-};
+const pageTitle = computed(() => {
+  switch (route.path) {
+    case '/data/upload': return 'Modul 1: Încărcare Date';
+    case '/data/analysis': return 'Modul 2: Vizualizare și Analiză';
+    case '/alerts': return 'Modul 3: Evaluare și Alerte AI';
+    case '/find-doctor': return 'Modul 4: Găsește un Doctor';
+    case '/doctor/dashboard': return 'Modul 4: Panou Control Medic';
+    default: return 'SmartGuard Dashboard';
+  }
+});
 </script>
 
 <template>
-  <div>
+  <div class="main-layout">
     <TheHeader />
 
-    <div class="main-content-area">
-      <h1>{{ pageTitle(route.path) }}</h1>
+    <main class="main-content-area">
+      <header class="page-header">
+        <h1>{{ pageTitle }}</h1>
+        <p v-if="route.path === '/main'" class="welcome-text">
+          Bine ai venit, <strong>{{ userName }}</strong>! Gestionează-ți sănătatea de aici.
+        </p>
+      </header>
 
-      <div v-if="route.path === '/main'" class="dashboard-area">
-
-        <div v-if="!isDoctor" class="cta-section">
-          <p>Ai nevoie de o consultație medicală?</p>
-          <button @click="goToFindDoctor" class="btn-cta">
-            Găsește un Doctor Acum
-          </button>
+      <div v-if="route.path === '/main'" class="dashboard-grid">
+        <div
+            v-for="mod in modules"
+            :key="mod.id"
+            :class="['menu-card', 'card-' + mod.id]"
+            @click="router.push(mod.path)"
+        >
+          <div class="card-icon">{{ mod.icon }}</div>
+          <div class="card-info">
+            <h3>{{ mod.title }}</h3>
+            <p>{{ mod.desc }}</p>
+          </div>
+          <div class="card-arrow">→</div>
         </div>
       </div>
 
-      <p v-else>
-        Conținutul funcționalității **{{ pageTitle(route.path) }}** va fi implementat aici.
-      </p>
-
-    </div>
+      <div v-else class="module-container">
+        <div class="placeholder-content">
+          <div class="info-box">
+            <p>Ești în secțiunea: <strong>{{ pageTitle }}</strong></p>
+            <p>Aici va fi implementată logica specifică pentru acest modul.</p>
+            <button @click="router.push('/main')" class="btn-back">Înapoi la Meniu</button>
+          </div>
+        </div>
+      </div>
+    </main>
   </div>
 </template>
 
 <style scoped>
+.main-layout {
+  min-height: 100vh;
+  background-color: var(--color-background);
+}
+
 .main-content-area {
-  padding: 30px;
-  color: var(--color-text);
-}
-.main-content-area h1 {
-  color: var(--color-heading);
-  margin-bottom: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
 }
 
-/* Stiluri pentru dashboard-ul central */
-.dashboard-area {
-  text-align: center;
-  padding: 50px 0;
-}
-.welcome-message {
-  font-size: 1.2em;
+.page-header {
   margin-bottom: 40px;
+  border-bottom: 2px solid var(--color-background-soft);
+  padding-bottom: 20px;
 }
 
-/* Stiluri pentru butonul mare Find Doctor (CTA) */
-.cta-section {
-  margin-top: 50px;
-}
-.cta-section p {
+.welcome-text {
   font-size: 1.1em;
-  color: var(--color-accent);
-  margin-bottom: 15px;
+  color: var(--color-text);
+  margin-top: 10px;
 }
-.btn-cta {
-  padding: 15px 30px;
-  background-color: var(--color-accent); /* Mov */
+
+/* Grid-ul pentru module */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 25px;
+}
+
+.menu-card {
+  background-color: var(--color-background-soft);
+  border-radius: 16px;
+  padding: 30px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 1px solid transparent;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.menu-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 20px rgba(0, 0, 0, 0.2);
+  background-color: var(--color-background-mute);
+}
+
+/* Culori specifice pentru marginea fiecărui card */
+.card-1 { border-left: 6px solid #42b983; } /* Verde */
+.card-2 { border-left: 6px solid #3498db; } /* Albastru */
+.card-3 { border-left: 6px solid #e74c3c; } /* Roșu */
+.card-4 { border-left: 6px solid #9b59b6; } /* Mov */
+
+.card-icon {
+  font-size: 3em;
+}
+
+.card-info h3 {
+  margin: 0 0 8px 0;
+  color: var(--color-heading);
+  font-size: 1.4em;
+}
+
+.card-info p {
+  margin: 0;
+  color: var(--color-text);
+  font-size: 0.95em;
+  line-height: 1.4;
+}
+
+.card-arrow {
+  margin-left: auto;
+  font-size: 1.5em;
+  opacity: 0.5;
+}
+
+/* Stiluri sub-pagini */
+.module-container {
+  background: var(--color-background-soft);
+  border-radius: 12px;
+  padding: 60px 40px;
+  text-align: center;
+}
+
+.btn-back {
+  margin-top: 25px;
+  padding: 12px 25px;
+  background-color: var(--color-accent);
   color: white;
-  font-size: 1.3em;
-  font-weight: bold;
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-  transition: background-color 0.3s, transform 0.2s;
+  font-weight: bold;
 }
-.btn-cta:hover {
+
+.btn-back:hover {
   background-color: var(--color-accent-hover);
-  transform: translateY(-2px);
 }
 </style>
